@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import Location from './Location';
 import WeatherData from './WeatherData';
+import transformWeather from '../../services/transformWeather'
+import { api_weather } from './../../constants/api_url';
+import './styles.css';
 import {
     SUN,
-    WINDY,
 } from './../../constants/weathers';
-import './styles.css';
 
 const data = {
     temperature: 5,
@@ -25,7 +26,17 @@ class WeatherLocation extends Component {
     }
 
     handleUpdateClick = () => {
-        console.log("actualizado");
+        fetch(api_weather).then( resolve => {
+            
+            return resolve.json();
+        }).then(data => {
+
+            const newWeather = transformWeather(data);
+            this.setState({
+                data : newWeather
+            });    
+            
+        });
     }
 
     render(){
